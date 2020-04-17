@@ -17,4 +17,6 @@ cd ..
 node get-countires-url.js
 # generate the json file of each country timeline data
 node get-data.js
+# generate the json file of timeline
+node get-timeline
 ```

@@ -25,6 +25,6 @@ Promise.all(allPromise).then(res => {
       console.log(error)
       return false
     }
-    console.log('data.json成功')
+    console.log('写入data.json成功')
   })
 })

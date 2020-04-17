@@ -1,18 +1,26 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <div class="histogram" ref="histogram"></div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import Histogram from '@/d3-utils/histogram.js'
+const data = require('$request/data.json')
 
 export default {
   name: 'Home',
-  components: {
-    HelloWorld
+  data () {
+    return {
+      data,
+      histogram: null
+    }
+  },
+  mounted () {
+    const histogram = this.$refs.histogram
+    this.histogram = new Histogram(histogram, this.data, {
+      width: histogram.offsetWidth,
+      height: 600
+    })
   }
 }
 </script>
