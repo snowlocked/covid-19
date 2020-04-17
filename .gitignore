@@ -20,4 +20,4 @@ yarn-error.log*
 *.sln
 *.sw?
 
-data/*.json
+/request/*.json
