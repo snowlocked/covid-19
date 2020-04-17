@@ -1,34 +1,20 @@
 # covid-19
 
 ## Project setup
-```
-yarn install
-```
 
-### Compiles and hot-reloads for development
+``` bash
+yarn
+cd data
+git init
+git config core.sparsecheckout true
+echo 'json/DXYArea-TimeSeries.json' >> .git/info/sparse-checkout
+# if the speed of git pull is very slow, you can try this image repo.
+# git remote add origin https://github.com.cnpmjs.org/BlankerL/DXY-COVID-19-Data.git
+git remote add origin https://github.com/BlankerL/DXY-COVID-19-Data.git
+git pull origin master
+cd ..
+# generate the json file of each country json url
+node get-countires-url.js
+# generate the json file of each country timeline data
+node get-data.js
 ```
-yarn run serve
-```
-
-### Compiles and minifies for production
-```
-yarn run build
-```
-
-### Run your tests
-```
-yarn run test
-```
-
-### Lints and fixes files
-```
-yarn run lint
-```
-
-### Run your unit tests
-```
-yarn run test:unit
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

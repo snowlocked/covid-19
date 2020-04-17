@@ -11,7 +11,8 @@ const allPromise = Object.keys(urlData)
     return {
       timeline: res.data.data,
       country: key,
-      countryEn: urlData[key].countryEnglishName
+      countryEn: urlData[key].countryEnglishName,
+      continent: urlData[key].continent
     }
   }))
 

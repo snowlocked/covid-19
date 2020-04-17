@@ -25,19 +25,20 @@ const s1IsLargeThanS2 = (s1, s2) => {
   return false
 }
 
+const setData = item => {
+  return {
+    countryEnglishName: item.countryEnglishName || item.countryFullName,
+    statisticsData: item.statisticsData,
+    continent: item.continentName
+  }
+}
+
 data.forEach(item => {
   if (!keysData[item.provinceName] && item.provinceName === item.countryName) {
-    keysData[item.provinceName] = {
-      countryEnglishName: item.countryEnglishName || item.countryFullName,
-      statisticsData: item.statisticsData
-    }
+    keysData[item.provinceName] = setData(item)
   } else if (item.statisticsData && keysData[item.provinceName] && (keysData[item.provinceName].statisticsData !== item.statisticsData)) {
     if (s1IsLargeThanS2(item.statisticsData, keysData[item.provinceName].statisticsData)) {
-      console.log(item.provinceName, item.statisticsData, keysData[item.provinceName].statisticsData)
-      keysData[item.provinceName] = {
-        countryEnglishName: item.countryEnglishName || item.countryFullName,
-        statisticsData: item.statisticsData
-      }
+      setData(item)
     }
   }
 })
