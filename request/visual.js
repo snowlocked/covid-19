@@ -13,79 +13,23 @@
 // import * as d3 from 'd3';
 // require("./stylesheet.css");
 
-$('#inputfile').change(function () {
-  $('#inputfile').attr('hidden', true)
-  var r = new FileReader()
-  r.readAsText(this.files[0], config.encoding)
-  r.onload = function () {
-    // 读取完成后，数据保存在对象的result属性中
-    var data = d3.csvParse(this.result)
-    try {
-      draw(data)
-    } catch (error) {
-      alert(error)
-    }
-  }
-})
-
 function draw (data) {
-  var date = []
-  data.forEach(element => {
-    if (date.indexOf(element.date) == -1) {
-      date.push(element.date)
-    }
-  })
+  var date = Object.keys(data).map(k => k)
   let rate = []
-  var auto_sort = config.auto_sort
-  if (auto_sort) {
-    var time = date.sort((x, y) => new Date(x) - new Date(y))
-  } else {
-    var time = date
-  }
-  var use_semilogarithmic_coordinate = config.use_semilogarithmic_coordinate
-  var big_value = config.big_value
-  var divide_by = config.divide_by
-  var divide_color_by = config.divide_color_by
-  var name_list = []
-  var changeable_color = config.changeable_color
-  var divide_changeable_color_by_type = config.divide_changeable_color_by_type
+  var time = date.sort((a, b) => a - b)
+  var nameList = []
   data
     .sort((a, b) => Number(b.value) - Number(a.value))
     .forEach(e => {
-      if (name_list.indexOf(e.name) == -1) {
-        name_list.push(e.name)
+      if (nameList.includes(e.name)) {
+        nameList.push(e.name)
       }
     })
   var baseTime = 3000
 
   // 选择颜色
   function getColor (d) {
-    var r = 0.0
-    if (changeable_color) {
-      var colorRange = d3.interpolateCubehelix(
-        config.color_range[0],
-        config.color_range[1]
-      )
-      if (divide_changeable_color_by_type && d.type in config.color_ranges) {
-        var colorRange = d3.interpolateCubehelix(
-          config.color_ranges[d.type][0],
-          config.color_ranges[d.type][1]
-        )
-      }
-      var v =
-        Math.abs(rate[d.name] - rate.MIN_RATE) /
-        (rate.MAX_RATE - rate.MIN_RATE)
-      if (isNaN(v) || v == -1) {
-        return colorRange(0.6)
-      }
-      return colorRange(v)
-    }
-
-    if (d[divide_color_by] in config.color) { return config.color[d[divide_color_by]] } else {
-      return d3.schemeCategory10[
-        Math.floor(d[divide_color_by].charCodeAt() % 10)
-      ]
-    }
+    return d.color
   }
 
   var showMessage = config.showMessage
@@ -131,14 +75,11 @@ function draw (data) {
     top: top_margin,
     bottom: bottom_margin
   }
-  var background_color = config.background_color
-
-  d3.select('body').attr('style', 'background:' + background_color)
 
   var enter_from_0 = config.enter_from_0
   interval_time /= 3
   var lastData = []
-  var currentdate = time[0].toString()
+  var currentdate = time[0]
   var currentData = []
   var lastname
   const svg = d3.select('svg')
