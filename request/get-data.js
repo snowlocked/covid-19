@@ -1,8 +1,34 @@
 const axios = require('axios')
 const urlData = require('./keysDataUrl.json')
 const fs = require('fs')
+const continentColor = {
+  亚洲: '#f00',
+  非洲: '#000',
+  欧洲: '#0f0',
+  大洋洲: '#00f',
+  南美洲: '#0ff',
+  北美洲: '#f0f'
+}
 
 const resolvePath = (file) => `${__dirname}/${file}`
+
+const write = (data, fileName) => {
+  fs.writeFile(resolvePath(fileName), JSON.stringify(data), 'utf8', function (error) {
+    if (error) {
+      console.log(error)
+      return false
+    }
+    console.log(`写入${fileName}成功`)
+  })
+}
+
+const setDate = (date) => {
+  date += ''
+  const year = date.substring(0, 4)
+  const month = date.substring(4, 6)
+  const day = date.substring(6)
+  return `${year}-${month}-${day}`
+}
 
 const data = []
 const allPromise = Object.keys(urlData)
@@ -20,11 +46,16 @@ Promise.all(allPromise).then(res => {
   res.forEach(r => {
     data.push(r)
   })
-  fs.writeFile(resolvePath('data.json'), JSON.stringify(data), 'utf8', function (error) {
-    if (error) {
-      console.log(error)
-      return false
-    }
-    console.log('写入data.json成功')
-  })
+  write(data, 'data.json')
+  const totalConfirmData = data.reduce((pre, countryData) => {
+    return pre.concat(countryData.timeline.map((item) => {
+      return {
+        value: item.confirmedCount,
+        name: countryData.country,
+        color: continentColor[countryData.continent],
+        date: setDate(item.dateId)
+      }
+    }))
+  }, [])
+  write(totalConfirmData, 'totalConfirmData.json')
 })
