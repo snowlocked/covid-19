@@ -10,22 +10,21 @@
 <script>
 // @ is an alias to /src
 import Histogram from '@/d3-utils/histogram.js'
-const data = require('$request/totalConfirmData.json')
+const data = require('$request/deathRate.json')
 
 export default {
   name: 'Home',
   data () {
     return {
-      index: 0,
-      histogram: null,
-      dateIds: Object.keys(data).map(key => key),
-      timeout: null
+      histogram: null
     }
   },
   mounted () {
     const histogram = this.$refs.histogram
     this.histogram = new Histogram(this.$refs.histogram, data, {
-      width: histogram.offsetWidth
+      width: histogram.offsetWidth,
+      max: 100,
+      fixed: 2
     })
   },
   methods: {

@@ -14,9 +14,8 @@ git remote add origin https://github.com/BlankerL/DXY-COVID-19-Data.git
 git pull origin master
 cd ..
 # generate the json file of each country json url
-node get-countires-url.js
+node request/get-countries-url.js
 # generate the json file of each country timeline data
-node get-data.js
-# generate the json file of timeline
-node get-timeline
+node request/get-data.js
+
 ```
