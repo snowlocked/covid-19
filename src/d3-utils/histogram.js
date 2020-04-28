@@ -97,6 +97,7 @@ export default class {
     this.xAxis = d3
       .axisBottom()
       .scale(this.xScale)
+      .ticks(xTicks)
 
     this.yAxis = d3
       .axisLeft()
@@ -271,8 +272,6 @@ export default class {
       .attr('y', 0)
       .attr('width', d => xScale(xValue(d)))
       .attr('fill-opacity', 1)
-
-    // d3.selectAll('rect').attr('rx', 13)
 
     this.barEnter
       .append('text')

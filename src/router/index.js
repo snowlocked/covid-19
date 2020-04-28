@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import DeathRate from '../views/DeathRate.vue'
+import Death from '../views/Death.vue'
 
 Vue.use(VueRouter)
 
@@ -12,9 +13,14 @@ const routes = [
     component: Home
   },
   {
-    path: '/death',
+    path: '/death-rate',
     name: 'DeathRate',
     component: DeathRate
+  },
+  {
+    path: '/death',
+    name: 'Death',
+    component: Death
   }
 ]
 

@@ -3,6 +3,7 @@
     <div id="nav">
       <router-link to="/">Home</router-link>
       <router-link to="/death">Death</router-link>
+      <router-link to="/death-rate">Death Rate</router-link>
     </div>
     <router-view/>
   </div>

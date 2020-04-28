@@ -2,7 +2,6 @@
   <div class="histogram">
     <div>
       <el-button @click="run" size="small" type="success">运行</el-button>
-      <p>说明：deathRate = death / (death + recovery) * 100%,其中death + recovery>=1000</p>
     </div>
     <div ref="histogram"></div>
   </div>
@@ -11,7 +10,7 @@
 <script>
 // @ is an alias to /src
 import Histogram from '@/d3-utils/histogram.js'
-const data = require('$request/deathRate.json')
+const data = require('$request/death.json')
 
 export default {
   name: 'Home',
@@ -23,9 +22,7 @@ export default {
   mounted () {
     const histogram = this.$refs.histogram
     this.histogram = new Histogram(this.$refs.histogram, data, {
-      width: histogram.offsetWidth,
-      max: 100,
-      fixed: 2
+      width: histogram.offsetWidth
     })
   },
   methods: {

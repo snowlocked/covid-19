@@ -69,4 +69,15 @@ Promise.all(allPromise).then(res => {
     }))
   }, [])
   write(deathRate, 'deathRate.json')
+  const death = data.reduce((pre, countryData) => {
+    return pre.concat(countryData.timeline.map((item) => {
+      return {
+        value: item.deadCount,
+        name: countryData.country,
+        color: continentColor[countryData.continent],
+        date: setDate(item.dateId)
+      }
+    }))
+  }, [])
+  write(death, 'death.json')
 })
