@@ -10,23 +10,23 @@
 <script>
 // @ is an alias to /src
 import Histogram from '@/d3-utils/histogram.js'
-const data = require('$request/totalConfirmData.json')
+const data = require('$request/deathRate2.json')
 
 export default {
   name: 'Home',
   data () {
     return {
-      index: 0,
-      histogram: null,
-      dateIds: Object.keys(data).map(key => key),
-      timeout: null
+      histogram: null
     }
   },
   mounted () {
     const histogram = this.$refs.histogram
     this.histogram = new Histogram(this.$refs.histogram, data, {
       width: histogram.offsetWidth,
-      title: 'covid-19感染人数'
+      max: 20,
+      valueFormat: t => t.toFixed(2) + '%',
+      title: '死亡率2',
+      subTitle: 'deathRate = death / total * 100%,只统计total>=100'
     })
   },
   methods: {

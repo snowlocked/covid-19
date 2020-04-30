@@ -2,12 +2,12 @@ const axios = require('axios')
 const urlData = require('./keysDataUrl.json')
 const fs = require('fs')
 const continentColor = {
-  亚洲: '#f00',
-  非洲: '#000',
-  欧洲: '#0f0',
-  大洋洲: '#00f',
-  南美洲: '#0ff',
-  北美洲: '#f0f'
+  亚洲: '#F56C6C',
+  非洲: '#303133',
+  欧洲: '#67C23A',
+  大洋洲: '#409EFF',
+  南美洲: '#E6A23C',
+  北美洲: '#E609FF'
 }
 
 const resolvePath = (file) => `${__dirname}/${file}`
@@ -80,4 +80,26 @@ Promise.all(allPromise).then(res => {
     }))
   }, [])
   write(death, 'death.json')
+  const deathRate2 = data.reduce((pre, countryData) => {
+    return pre.concat(countryData.timeline.filter(item => item.confirmedCount >= 100).map(item => {
+      return {
+        value: ((item.deadCount / item.confirmedCount) * 100).toFixed(4),
+        name: countryData.country,
+        color: continentColor[countryData.continent],
+        date: setDate(item.dateId)
+      }
+    }))
+  }, [])
+  write(deathRate2, 'deathRate2.json')
+  const currentConfirmed = data.reduce((pre, countryData) => {
+    return pre.concat(countryData.timeline.map((item) => {
+      return {
+        value: item.currentConfirmed,
+        name: countryData.country,
+        color: continentColor[countryData.continent],
+        date: setDate(item.dateId)
+      }
+    }))
+  }, [])
+  write(currentConfirmed, 'currentConfirmed.json')
 })

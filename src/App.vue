@@ -4,6 +4,7 @@
       <router-link to="/">Home</router-link>
       <router-link to="/death">Death</router-link>
       <router-link to="/death-rate">Death Rate</router-link>
+      <router-link to="/death-rate2">Death Rate2</router-link>
     </div>
     <router-view/>
   </div>

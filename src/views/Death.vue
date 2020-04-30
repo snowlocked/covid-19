@@ -22,7 +22,8 @@ export default {
   mounted () {
     const histogram = this.$refs.histogram
     this.histogram = new Histogram(this.$refs.histogram, data, {
-      width: histogram.offsetWidth
+      width: histogram.offsetWidth,
+      title: '死亡人数'
     })
   },
   methods: {

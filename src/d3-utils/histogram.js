@@ -3,7 +3,7 @@ export default class {
   constructor (selector, data, options) {
     this.selector = selector
     this.data = data
-    this.options = Object.assign({}, options, {
+    this.options = Object.assign({}, {
       height: 600,
       baseTime: 3e3,
       intervalTime: 1,
@@ -19,8 +19,9 @@ export default class {
       xTicks: 10,
       dateLabelSwitch: 'visible',
       dateLabelY: -10,
-      updateRate: 1
-    })
+      updateRate: 1,
+      valueFormat: t => Math.floor(t)
+    }, options)
 
     this.margin = {
       left: this.options.leftMargin,
@@ -32,7 +33,7 @@ export default class {
     this.options.innerWidth = width - margin.left - margin.right
     this.options.innerHeight = height - margin.top - margin.bottom - 32
     this.options.intervalTime /= 3
-    this.options.dateLabelX = this.options.innerWidth
+    this.options.dateLabelX = this.options.innerWidth + this.margin.right / 2
     this.setDates()
     this.initSvg()
   }
@@ -66,7 +67,9 @@ export default class {
         dateLabelX,
         dateLabelY,
         itemX,
-        textY
+        textY,
+        title,
+        subTitle
       },
       margin,
       currentDate
@@ -75,6 +78,23 @@ export default class {
       .append('svg')
       .attr('width', width)
       .attr('height', height)
+
+    if (title) {
+      this.svg.append('text')
+        .text(title)
+        .attr('x', width / 2)
+        .attr('y', margin.top / 4)
+        .attr('text-anchor', 'middle')
+        .attr('style', 'font-size:18px;')
+    }
+    if (subTitle) {
+      this.svg.append('text')
+        .text(subTitle)
+        .attr('x', width / 2)
+        .attr('y', margin.top * 2 / 3)
+        .attr('text-anchor', 'middle')
+        .attr('style', 'font-size:12px;color:#ccc;')
+    }
 
     this.g = this.svg
       .append('g')
@@ -205,7 +225,7 @@ export default class {
         labelX,
         height,
         max,
-        fixed
+        valueFormat
       }
     } = this
     if (currentData.length === 0) return
@@ -306,9 +326,9 @@ export default class {
       .tween('text', function (d) {
         // 初始值为d.value的0.9倍
         this.textContent = d.value * 0.9
-        var i = d3.interpolate(this.textContent, Number(d.value))
+        var i = d3.interpolate(parseFloat(this.textContent), Number(d.value))
         return t => {
-          this.textContent = fixed ? i(t).toFixed(fixed) : Math.floor(i(t))
+          this.textContent = valueFormat(i(t))
         }
       })
       .attr('fill-opacity', 1)
@@ -344,9 +364,9 @@ export default class {
     this.barUpdate
       .select('.value')
       .tween('text', function (d) {
-        var i = d3.interpolate(this.textContent, Number(d.value))
+        var i = d3.interpolate(parseFloat(this.textContent), Number(d.value))
         return t => {
-          this.textContent = fixed ? i(t).toFixed(fixed) : Math.floor(i(t))
+          this.textContent = valueFormat(i(t))
         }
       })
       .duration(2990 * intervalTime)

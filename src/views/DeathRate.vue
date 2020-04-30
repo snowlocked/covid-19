@@ -2,7 +2,6 @@
   <div class="histogram">
     <div>
       <el-button @click="run" size="small" type="success">运行</el-button>
-      <p>说明：deathRate = death / (death + recovery) * 100%,其中death + recovery>=1000</p>
     </div>
     <div ref="histogram"></div>
   </div>
@@ -25,7 +24,9 @@ export default {
     this.histogram = new Histogram(this.$refs.histogram, data, {
       width: histogram.offsetWidth,
       max: 100,
-      fixed: 2
+      valueFormat: t => t.toFixed(2) + '%',
+      title: '死亡率1',
+      subTitle: 'deathRate = death / (death + recovery) * 100%,只统计death + recovery>=1000'
     })
   },
   methods: {
