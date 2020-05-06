@@ -13,8 +13,6 @@ echo 'json/DXYArea-TimeSeries.json' >> .git/info/sparse-checkout
 git remote add origin https://github.com/BlankerL/DXY-COVID-19-Data.git
 git pull origin master
 cd ..
-# generate the json file of each country json url
-node request/get-countries-url.js
 # generate the json file of each country timeline data
 node request/get-data.js
 
