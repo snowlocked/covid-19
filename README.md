@@ -17,3 +17,18 @@ cd ..
 node request/get-data.js
 
 ```
+
+## Run & Build
+
+```bash
+# run in local
+yarn serve
+# build static html
+yarn build
+```
+
+## Reference
+
+- [丁香医生](https://ncov.dxy.cn/ncovh5/view/pneumonia?from=dxy)
+- [数据可视化](https://github.com/Jannchie/Historical-ranking-data-visualization-based-on-d3.js)
+- [数据仓库](https://github.com/BlankerL/DXY-COVID-19-Crawler)
