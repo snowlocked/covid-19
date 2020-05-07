@@ -1,5 +1,5 @@
-
-const data = require('../data/json/DXYArea-TimeSeries.json')
+const data = require('./data.js')
+const setDate = require('./set-date.js')
 const fs = require('fs')
 const continentColor = {
   亚洲: '#F56C6C',
@@ -29,8 +29,8 @@ const filterSameDate = data => {
   return d
 }
 
-const write = (data, fileName) => {
-  data = filterSameDate(data)
+const write = (data, fileName, filter = true) => {
+  filter && (data = filterSameDate(data))
   fs.writeFile(resolvePath(fileName), JSON.stringify(data), 'utf8', function (error) {
     if (error) {
       console.log(error)
@@ -40,13 +40,6 @@ const write = (data, fileName) => {
   })
 }
 
-const setDate = (date) => {
-  date = new Date(date)
-  const year = date.getFullYear()
-  const month = date.getMonth() + 1
-  const day = date.getDate()
-  return `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`
-}
 const totalConfirmData = data.map(countryData => {
   return {
     value: countryData.confirmedCount,
