@@ -2,7 +2,39 @@ const _ = require('lodash')
 const setDate = require('./set-date.js')
 const data = require('../data/json/DXYArea-TimeSeries.json')
   .filter(item => item.updateTime > new Date(2020, 1, 1).getTime())
-const foreignData = data.filter(item => item.countryName !== '中国')
+
+const diffDay = (time1, time2) => {
+  const day = 24 * 60 * 60
+  time1 = Math.floor(time1 / day)
+  time2 = Math.floor(time2 / day)
+  return (time1 - time2) / 1000
+}
+const foreignAllData = data.filter(item => item.countryName !== '中国')
+let foreignData = []
+const foreignObjectDate = {}
+foreignAllData.forEach(item => {
+  const date = setDate(item.updateTime)
+  const key = `${item.countryName}:${date}`
+  item.date = date
+  if (!foreignObjectDate[key] || (foreignObjectDate[key] && item.updateTime > foreignObjectDate[key])) {
+    foreignObjectDate[key] = item.updateTime
+    foreignData.push(item)
+  }
+})
+foreignData = _.groupBy(foreignData, 'countryName')
+foreignData = Object.keys(foreignData)
+  .map(countryName => {
+    const countryData = foreignData[countryName].sort((a, b) => a.updateTime - b.updateTime)
+    for (let i = 1; i < countryData.length; i++) {
+      const today = countryData[i]
+      const yesterday = countryData[i - 1]
+      if (diffDay(today.updateTime, yesterday.updateTime) > 1) {
+        countryData.splice(i, 0, { ...yesterday, updateTime: yesterday.updateTime + 24 * 60 * 60 * 1000 })
+      }
+    }
+    return countryData
+  })
+foreignData = _.flatten(foreignData)
 const chinaProvinceData = data
   .filter(countryData => countryData.countryName === '中国')
   .map(item => {
