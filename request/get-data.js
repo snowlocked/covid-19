@@ -12,25 +12,7 @@ const continentColor = {
 
 const resolvePath = (file) => `${__dirname}/${file}`
 
-const filterSameDate = data => {
-  const o = {}
-  let d = []
-  data.forEach(item => {
-    const key = `${item.name}:${item.date}`
-    if (o[key] && item.value > o[key]) {
-      o[key] = item.value
-      d = d.filter(i => key !== `${i.name}:${i.date}`)
-      d.push(item)
-    } else if (!o[key]) {
-      o[key] = item.value
-      d.push(item)
-    }
-  })
-  return d
-}
-
 const write = (data, fileName, filter = true) => {
-  filter && (data = filterSameDate(data))
   fs.writeFile(resolvePath(fileName), JSON.stringify(data), 'utf8', function (error) {
     if (error) {
       console.log(error)

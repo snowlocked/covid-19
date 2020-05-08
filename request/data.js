@@ -1,13 +1,13 @@
 const _ = require('lodash')
+const dayjs = require('dayjs')
 const setDate = require('./set-date.js')
 const data = require('../data/json/DXYArea-TimeSeries.json')
   .filter(item => item.updateTime > new Date(2020, 1, 1).getTime())
 
 const diffDay = (time1, time2) => {
-  const day = 24 * 60 * 60
-  time1 = Math.floor(time1 / day)
-  time2 = Math.floor(time2 / day)
-  return (time1 - time2) / 1000
+  time1 = dayjs(time1).hour(0).minute(0).second(0).millisecond(0)
+  time2 = dayjs(time2).hour(0).minute(0).second(0).millisecond(0)
+  return time1.diff(time2, 'day')
 }
 const foreignAllData = data.filter(item => item.countryName !== '中国')
 let foreignData = []
