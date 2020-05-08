@@ -26,7 +26,12 @@ export default {
       max: 100,
       valueFormat: t => t.toFixed(2) + '%',
       title: '死亡率1',
-      subTitle: 'deathRate = death / (death + recovery) * 100%,只统计death + recovery>=1000'
+      subTitle: 'deathRate = death / (death + recovery) * 100%',
+      content: `COVID-19死亡率数据可视化排名\n
+      统计数据从2020-02-01开始，数据引用自丁香医生，部分数据可能与实际存在偏差\n
+      计算公式：死亡人数/(死亡+治愈)人数 * 100%\n
+      部分国家和地区死亡人数和治愈人数存在较大差距，或者统计条件的原因，这公式得出的死亡率较高\n
+      只统计死亡+治愈>=1000的数据`
     })
   },
   methods: {

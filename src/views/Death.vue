@@ -23,7 +23,9 @@ export default {
     const histogram = this.$refs.histogram
     this.histogram = new Histogram(this.$refs.histogram, data, {
       width: histogram.offsetWidth,
-      title: '死亡人数'
+      title: '死亡人数',
+      content: `COVID-19导致死亡人数数据可视化排名\n
+      统计数据从2020-02-01开始，数据引用自丁香医生，部分数据可能与实际存在偏差`
     })
   },
   methods: {

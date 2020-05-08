@@ -20,7 +20,8 @@ export default class {
       dateLabelSwitch: 'visible',
       dateLabelY: -10,
       updateRate: 1,
-      valueFormat: t => Math.floor(t)
+      valueFormat: t => Math.floor(t),
+      content: '点击运行开始'
     }, options)
 
     this.margin = {
@@ -69,7 +70,8 @@ export default class {
         itemX,
         textY,
         title,
-        subTitle
+        subTitle,
+        content
       },
       margin,
       currentDate
@@ -137,7 +139,15 @@ export default class {
       .attr('x', itemX)
       .attr('y', textY)
     this.i = 0
-    this.next()
+    this.g.append('text')
+      .attr('class', 'content')
+      .selectAll('tspan')
+      .data(content.split('\n'))
+      .enter()
+      .append('tspan')
+      .text(d => d.trim())
+      .attr('x', 0)
+      .attr('y', (d, i) => i * 20)
   }
 
   getColor (d) {
@@ -195,11 +205,6 @@ export default class {
     })
     this.dataSort()
     this.currentData = this.currentData.slice(0, maxNumber)
-
-    d3.transition('2')
-      .each(this.redraw.bind(this))
-      .each(this.change.bind(this))
-    this.lastData = this.currentData
   }
 
   redraw () {
@@ -225,13 +230,18 @@ export default class {
         labelX,
         height,
         max,
-        valueFormat
+        valueFormat,
+        innerHeight
       }
     } = this
     if (currentData.length === 0) return
     xScale
       .domain([0, max || d3.max(currentData.map(data => data.value)) * 1.1])
       .range([0, innerWidth])
+
+    yScale
+      .domain(currentData.map(d => d.name).reverse())
+      .range([innerHeight, 0])
 
     dateLabel
       .transition()
@@ -260,10 +270,6 @@ export default class {
       .call(yAxis)
 
     yAxisG.selectAll('.tick').remove()
-
-    yScale
-      .domain(currentData.map(d => d.name).reverse())
-      .range([innerHeight, 0])
 
     this.bar = g.selectAll('.bar').data(currentData, function (d) {
       return d.name
@@ -442,6 +448,12 @@ export default class {
     const { time } = this
     this.currentDate = time[this.i]
     this.getCurrentData()
+    this.g.selectAll('.content')
+      .remove()
+    d3.transition('2')
+      .each(this.redraw.bind(this))
+      .each(this.change.bind(this))
+    this.lastData = this.currentData
     this.i++
   }
 
