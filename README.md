@@ -1,4 +1,6 @@
-# covid-19
+# COVID-19
+
+[Graph Page](https://snowlocked.github.io/covid-19/index.html#/)
 
 ## Project setup
 
